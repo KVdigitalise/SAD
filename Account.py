@@ -1,5 +1,9 @@
 from flask import Flask, jsonify, request, session
+from userModel import User
+from userProfileModel import UserProfile
 import pyrebase
+from datetime import datetime
+from ConnectionModel import Connection
 
 config = {
     'apiKey': "AIzaSyC-xfcBy-1gr8ok35jJR3N8rMRcSEeigwU",
@@ -11,6 +15,7 @@ config = {
     'appId': "1:612450494062:web:b6b5b116183c5c1021687f",
     'measurementId': "G-DJF7WQG0EF"
 }
+
 firebase = pyrebase.initialize_app(config)
 database = firebase.database()
 storage = firebase.storage()

@@ -37,6 +37,8 @@ app.add_url_rule('/login', methods=['POST', 'GET'], view_func=Account().login)
 
 app.add_url_rule('/set_user_profile', methods=['POST', 'GET'], view_func=UserProfile().update_profile)
 
+app.add_url_rule('/get_user_profile', methods=['POST', 'GET'], view_func=UserProfile().getter)
+
 
 
 app.add_url_rule('/create_connection', methods=["GET", "POST"],
