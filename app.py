@@ -63,11 +63,13 @@ def get_users():
 
 @app.route('/get_all_friends', methods=['POST', 'GET'])
 def get_friends():
-    user = database.child("users").child(request.json["user_id"]).get().val()
-    connection_list = user['connection']
-    users = []
-    friends = []
+    users =[];
     users = database.child("users").get().val()
+    for user in users:
+        if(user["user_id"] == request.json["user_id"]):
+            user_login = user.copy()
+    connection_list = user_login['connection']
+    friends = []
     for user in users:
         flag = 0
         for connection in connection_list:
