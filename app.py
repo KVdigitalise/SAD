@@ -35,10 +35,11 @@ app.add_url_rule(
 app.add_url_rule('/login', methods=['POST', 'GET'], view_func=Account().login)
 
 
-app.add_url_rule('/set_user_profile', methods=['POST', 'GET'], view_func=UserProfile().update_profile)
+app.add_url_rule('/set_user_profile',
+                 methods=['POST', 'GET'], view_func=UserProfile().update_profile)
 
-app.add_url_rule('/get_user_profile', methods=['POST', 'GET'], view_func=UserProfile().getter)
-
+app.add_url_rule('/get_user_profile',
+                 methods=['POST', 'GET'], view_func=UserProfile().getter)
 
 
 app.add_url_rule('/create_connection', methods=["GET", "POST"],
@@ -58,6 +59,20 @@ def get_users():
     users = []
     users = database.child("users").get().val()
     return jsonify(users)
+
+
+@app.route('/get_all_friends', methods=['POST', 'GET'])
+def get_friends():
+    user = []
+    user = database.child("users").child(request.json["user_id"]).get().val()
+    connection_list = user['connection']
+    users = []
+    friends = []
+    users = database.child("users").get().val()
+    for user in users:
+        if(user["user_id"] in connection_list):
+            friends.append(user)
+    return jsonify(friends)
 
 
 @app.route('/report_user', methods=['POST', 'GET'])
