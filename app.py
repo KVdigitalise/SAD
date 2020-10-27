@@ -63,19 +63,20 @@ def get_users():
 
 @app.route('/get_all_friends', methods=['POST', 'GET'])
 def get_friends():
-    users =[];
+    users =[]
     users = database.child("users").get().val()
-    for user in users:
+    for user in users.values():
         if(user["user_id"] == request.json["user_id"]):
             user_login = user.copy()
     connection_list = user_login['connection']
     friends = []
-    for user in users:
+    for user in users.values():
         flag = 0
         for connection in connection_list:
-            if(str(user["user_id"]) == str(connection["user_id_receiver"])):
-                flag = 1
-                break
+            if(user["user_id"] == connection["user_id_receiver"]):
+                if(connection["status"] ==1):
+                    flag = 1
+                    break
         if(flag == 1):
             friends.append(user)
     sorted(friends, key=lambda i: i['name'])
