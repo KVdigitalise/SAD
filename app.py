@@ -5,6 +5,7 @@ import pyrebase
 from datetime import datetime
 from ConnectionModel import Connection
 from Account import Account
+from matching import get_match_users
 
 config = {
     'apiKey': "AIzaSyC-xfcBy-1gr8ok35jJR3N8rMRcSEeigwU",
@@ -53,6 +54,9 @@ app.add_url_rule('/accept_connection',
 app.add_url_rule('/reject_connection',
                  methods=['POST', 'GET'], view_func=Connection().reject_request)
 
+app.add_url_rule('/get_match_users',
+                 methods=['POST', 'GET'], view_func=get_match_users)
+
 
 @app.route('/get_all_users', methods=['POST', 'GET'])
 def get_users():
@@ -74,12 +78,13 @@ def get_friends():
         flag = 0
         for connection in connection_list:
             if(user["user_id"] == connection["user_id_receiver"]):
-                if(connection["status"] ==1):
+                if(connection["status"] == 1):
                     flag = 1
                     break
         if(flag == 1):
             friends.append(user)
-    sorted(friends, key=lambda i: i['name'])
+    sorted(friends, key=lambda i: i['name' ])
+    print(friends)
     return jsonify(friends)
 
 
@@ -90,6 +95,27 @@ def report_user():
         'complainee': request.json["complainee"],
         'message': request.json['message']
     })
+
+@app.route('/pending_request', methods=['POST', 'GET'])
+def report_user():
+    users =[]
+    users = database.child("users").get().val()
+    for user in users.values():
+        if(user["user_id"] == request.json["user_id"]):
+            user_login = user.copy()
+    connection_list = user_login['connection']
+    friends_pending = []
+    for user in users.values():
+        flag = 0
+        for connection in connection_list:
+            if(user["user_id"] == connection["user_id_receiver"]):
+                if(connection["status"] == 0):
+                    flag = 1
+                    break
+        if(flag == 1):
+            friends_pending.append(user)
+    sorted(friends_pending, key=lambda i: i['name' ])
+    return jsonify(friends_pending)
 
 
 if __name__ == '__main__':
