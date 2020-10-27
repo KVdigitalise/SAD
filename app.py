@@ -72,9 +72,9 @@ def get_friends():
     for user in users:
         flag = 0
         for connection in connection_list:
-            if(user["user_id"] == connection["user_id_receiver"])
-            flag = 1
-            break
+            if(user["user_id"] == connection["user_id_receiver"]):
+                flag = 1
+                break
         if(flag == 1):
             friends.append(user)
     sorted(friends, key=lambda i: i['name'])
