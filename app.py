@@ -70,9 +70,14 @@ def get_friends():
     friends = []
     users = database.child("users").get().val()
     for user in users:
-        if(user["user_id"] in connection_list):
+        flag = 0
+        for connection in connection_list:
+            if(user["user_id"] == connection["user_id_receiver"])
+            flag = 1
+            break
+        if(flag == 1):
             friends.append(user)
-    sorted(friends, key = lambda i: i['name'])
+    sorted(friends, key=lambda i: i['name'])
     return jsonify(friends)
 
 
