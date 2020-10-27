@@ -72,6 +72,7 @@ def get_friends():
     for user in users:
         if(user["user_id"] in connection_list):
             friends.append(user)
+    sorted(friends, key = lambda i: i['name'])
     return jsonify(friends)
 
 
