@@ -97,7 +97,7 @@ def report_user():
     })
 
 @app.route('/pending_request', methods=['POST', 'GET'])
-def report_user():
+def get_pending_request():
     users =[]
     users = database.child("users").get().val()
     for user in users.values():
@@ -116,6 +116,8 @@ def report_user():
             friends_pending.append(user)
     sorted(friends_pending, key=lambda i: i['name' ])
     return jsonify(friends_pending)
+
+
 
 
 if __name__ == '__main__':
