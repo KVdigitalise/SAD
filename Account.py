@@ -50,7 +50,8 @@ class Account:
                 'user_id_receiver': 0,
                 'status': 0
             }]
-            userobj = User(request.json['email'],
+            userobj = User()
+            userobj.setvalues(request.json['email'],
                            user_id, request.json['name'], last_login=current_time, user_profile=user_profile, connection=connection)
             print(userobj.__dict__)
 
@@ -77,7 +78,8 @@ class Account:
             users = database.child("users").get().val()
             for user in users.values():
                 if(user['user_id'] == str(auth.get_account_info(user_login['idToken'])['users'][0]['localId'])):
-                    user_login = User(user['email_id'],
+                    user_login = User()
+                    user_login.setvalues(user['email_id'],
                                       user['user_id'], user['name'], current_time, user['user_profile'], user['connection'])
                     database.child("users").child(
                         user["user_id"]).update({'login_status': True})

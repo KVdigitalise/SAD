@@ -55,7 +55,7 @@ app.add_url_rule('/reject_connection',
                  methods=['POST', 'GET'], view_func=Connection().reject_request)
 
 app.add_url_rule('/get_match_users',
-                 methods=['POST', 'GET'], view_func=get_match_users)
+                 methods=['POST', 'GET'], view_func=User().matching)
 
 
 @app.route('/get_all_users', methods=['POST', 'GET'])
@@ -77,7 +77,7 @@ def get_friends():
     for user in users.values():
         flag = 0
         for connection in connection_list:
-            if(user["user_id"] == connection["user_id_receiver"]):
+            if((user["user_id"] == connection["user_id_receiver"] or user["user_id"] == connection["user_id_sender"]) and user["user_id"] != user_login["user_id"]):
                 if(connection["status"] == 1):
                     flag = 1
                     break
@@ -108,7 +108,8 @@ def get_pending_request():
     for user in users.values():
         flag = 0
         for connection in connection_list:
-            if(user["user_id"] == connection["user_id_receiver"]):
+            if(user["user_id"] == connection["user_id_sender"] and user["user_id"] != user_login["user_id"]):
+                print(user["user_id"])
                 if(connection["status"] == 0):
                     flag = 1
                     break

@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorflow_probability as tfp
 import numpy as np
 from flask import Flask, jsonify, request, session
-from userModel import User
+# from userModel import User
 from userProfileModel import UserProfile
 import pyrebase
 from datetime import datetime
